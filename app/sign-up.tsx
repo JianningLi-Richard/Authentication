@@ -37,6 +37,8 @@ export default function SignUpScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     control,
@@ -149,17 +151,30 @@ export default function SignUpScreen() {
               control={control}
               name="password"
               render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  style={[styles.input, errors.password && styles.inputError]}
-                  placeholder="At least 8 characters"
-                  placeholderTextColor="#9CA3AF"
-                  secureTextEntry
-                  textContentType="newPassword"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  editable={!loading}
-                />
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    style={[
+                      styles.passwordInput,
+                      errors.password && styles.inputError,
+                    ]}
+                    placeholder="At least 8 characters"
+                    placeholderTextColor="#9CA3AF"
+                    secureTextEntry={!showPassword}
+                    textContentType="newPassword"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    editable={!loading}
+                  />
+                  <TouchableOpacity
+                    style={styles.eyeButton}
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    <Text style={styles.eyeText}>
+                      {showPassword ? "Hide" : "Show"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               )}
             />
             {errors.password && (
@@ -173,20 +188,30 @@ export default function SignUpScreen() {
               control={control}
               name="confirmPassword"
               render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  style={[
-                    styles.input,
-                    errors.confirmPassword && styles.inputError,
-                  ]}
-                  placeholder="Re-enter your password"
-                  placeholderTextColor="#9CA3AF"
-                  secureTextEntry
-                  textContentType="newPassword"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  editable={!loading}
-                />
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    style={[
+                      styles.passwordInput,
+                      errors.confirmPassword && styles.inputError,
+                    ]}
+                    placeholder="Re-enter your password"
+                    placeholderTextColor="#9CA3AF"
+                    secureTextEntry={!showConfirmPassword}
+                    textContentType="newPassword"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    editable={!loading}
+                  />
+                  <TouchableOpacity
+                    style={styles.eyeButton}
+                    onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    <Text style={styles.eyeText}>
+                      {showConfirmPassword ? "Hide" : "Show"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               )}
             />
             {errors.confirmPassword && (
@@ -267,6 +292,29 @@ const styles = StyleSheet.create({
   },
   inputGroup: {
     marginBottom: 16,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#D1D5DB",
+    borderRadius: 10,
+    backgroundColor: "#F9FAFB",
+  },
+  passwordInput: {
+    flex: 1,
+    padding: 14,
+    fontSize: 16,
+    color: "#111827",
+  },
+  eyeButton: {
+    paddingHorizontal: 14,
+    paddingVertical: 14,
+  },
+  eyeText: {
+    color: "#4F46E5",
+    fontSize: 14,
+    fontWeight: "600",
   },
   label: {
     fontSize: 14,
