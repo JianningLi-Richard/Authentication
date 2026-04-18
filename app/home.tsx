@@ -1,7 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   StyleSheet,
@@ -13,12 +13,6 @@ import {
 export default function HomeScreen() {
   const { user, isLoading } = useAuth();
   const [signingOut, setSigningOut] = useState(false);
-
-  useEffect(() => {
-    if (!isLoading && !user) {
-      router.replace("/sign-in");
-    }
-  }, [user, isLoading]);
 
   const handleSignOut = async () => {
     try {
@@ -41,7 +35,21 @@ export default function HomeScreen() {
     );
   }
 
-  if (!user) return null;
+  if (!user)
+    return (
+      <View style={styles.container}>
+        <View style={styles.card}>
+          <Text style={styles.title}>You do not have access to this page.</Text>
+          <Text style={styles.subtitle}>Please sign in to continue.</Text>
+          <TouchableOpacity
+            style={styles.signInButton}
+            onPress={() => router.push("/sign-in")}
+          >
+            <Text style={styles.buttonText}>Sign In</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
 
   return (
     <View style={styles.container}>
@@ -51,7 +59,7 @@ export default function HomeScreen() {
         <Text style={styles.subtitle}>You are signed in.</Text>
 
         <TouchableOpacity
-          style={[styles.button, signingOut && styles.buttonDisabled]}
+          style={[styles.signOutButton, signingOut && styles.buttonDisabled]}
           onPress={handleSignOut}
           disabled={signingOut}
         >
@@ -101,7 +109,14 @@ const styles = StyleSheet.create({
     color: "#6B7280",
     marginBottom: 24,
   },
-  button: {
+  signInButton: {
+    backgroundColor: "#4F46E5",
+    borderRadius: 10,
+    padding: 16,
+    alignItems: "center",
+    width: "100%",
+  },
+  signOutButton: {
     backgroundColor: "#DC2626",
     borderRadius: 10,
     padding: 16,
