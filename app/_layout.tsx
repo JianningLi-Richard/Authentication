@@ -1,5 +1,5 @@
 import { AuthProvider, useAuth } from "@/context/AuthContext";
-import { Redirect, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { ActivityIndicator, View } from "react-native";
 
 export default function RootLayout() {
@@ -11,7 +11,7 @@ export default function RootLayout() {
 }
 
 function AppContent() {
-  const { session, isLoading } = useAuth();
+  const { isLoading } = useAuth();
 
   if (isLoading) {
     return (
@@ -22,13 +22,11 @@ function AppContent() {
   }
 
   return (
-    <>
-      {!session && <Redirect href="/sign-in" />}
-      <Stack screenOptions={{ headerShown: !session ? false : true }}>
-        <Stack.Screen name="index" options={{ title: "Home" }} />
-        <Stack.Screen name="sign-in" options={{ headerShown: false }} />
-        <Stack.Screen name="sign-up" options={{ headerShown: false }} />
-      </Stack>
-    </>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="home" options={{ title: "Home" }} />
+      <Stack.Screen name="sign-in" />
+      <Stack.Screen name="sign-up" />
+    </Stack>
   );
 }

@@ -1,18 +1,19 @@
 import { supabase } from "@/lib/supabase";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+
 import {
-    ActivityIndicator,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { z } from "zod";
 
@@ -57,14 +58,16 @@ export default function SignInScreen() {
         } else {
           setError(signInError.message);
         }
+        return;
       }
+
+      router.replace("/home");
     } catch (err) {
       setError("A network error occurred. Please check your connection.");
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
